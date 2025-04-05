@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
-
+//hi
 export async function POST(request) {
   try {
     const { prompt, inputValue } = await request.json();
