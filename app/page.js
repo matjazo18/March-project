@@ -16,9 +16,11 @@ export default function Home() {
         <br /> AI-Powered Job Discovery
       </h1>
       <div className=" flex-col justify-center mx-auto space-y-8 pb-40">
-        <FileDropArea setFileContent={setFileContent} />{" "}
+        <div className=" flex justify-center">
+          <FileDropArea setFileContent={setFileContent} />{" "}
+          <ViewMetrics fileContent={fileContent} />
+        </div>
         <InputAi fileContent={fileContent} />
-        <ViewMetrics fileContent={fileContent} />
       </div>
     </div>
   );

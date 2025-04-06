@@ -6,18 +6,21 @@ export default function ViewMetrics({ fileContent }) {
   const [open, setToOpen] = useState(false);
   const [view, setView] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const setclose = () => {
     setToOpen(false);
     setView(null);
+    setError(null);
   };
 
   const inputValue =
-    "From the CV make a metric on scale from 1 to 10 how much is this person social, physical, communicative, technical and creative. Also add some emojis and only the metric and the score along with it.";
+    "From the CV make a metric on scale from 1 to 10 how much is this person social, physical, communicative, technical and creative. Also add some emojis and only the metric and the score along with it. Write only metrics with no other text and separate them with ,. And don't give so much point the cv should have atleat 3 things to get to 7/10 and if they have only 1 experience with working physical that would be like  a 2/10";
 
   const handleGenerate = async () => {
     setLoading(true);
     setToOpen(true);
+    setError(null);
     try {
       const response = await axios.post(
         "/api/fiveSkilLevel",
@@ -31,64 +34,96 @@ export default function ViewMetrics({ fileContent }) {
           },
         }
       );
-      setView(response.data);
+
+      // Access the response data correctly
+      if (response.data?.response) {
+        setView(response.data.response);
+      } else {
+        throw new Error("Invalid response format from API");
+      }
     } catch (error) {
       console.error("API Error:", error);
-      setView({
-        error: error.response?.data?.error || "Failed to generate response",
-      });
+      setError(error.response?.data?.error || "Failed to generate response");
+      setView(null);
     } finally {
       setLoading(false);
     }
   };
 
-  const parseMetrics = (data) => {
-    if (!data) return [];
-
-    if (data.error) {
-      return [{ name: "Error", description: data.error }];
-    }
-
-    if (Array.isArray(data)) {
-      return data;
-    }
-
-    if (typeof data === "string") {
-      return data
-        .split("\n")
-        .filter((line) => line.trim())
-        .map((line) => {
-          const [namePart, ...descParts] = line.split(":");
-          const description = descParts.join(":").trim();
-          const match = description.match(/(\d+)\/10/);
-          const value = match ? parseInt(match[1]) * 10 : 0;
-          return {
-            name: namePart?.trim() || "Unknown",
-            description,
-            value,
-          };
-        });
-    }
-
-    return Object.entries(data).map(([name, description]) => ({
-      name,
-      description: String(description),
-      value: 50, // Default value if we can't parse from object
-    }));
-  };
-
-  const metrics = parseMetrics(view);
-
-  // Color mapping for different skill levels
   const getProgressColor = (value) => {
     if (value >= 80) return "progress-success";
-    if (value >= 60) return "progress-primary";
-    if (value >= 40) return "progress-warning";
+    if (value >= 60) return "progress-warning";
+    if (value >= 40) return "progress-info";
     return "progress-error";
   };
 
+  const renderSkills = () => {
+    console.log("Current view:", view); // Debug log
+
+    if (!view || typeof view !== "string") {
+      console.log("View is not a valid string"); // Debug log
+      return null;
+    }
+
+    try {
+      const skillEntries = view.split(",").map((entry) => entry.trim());
+      console.log("Skill entries:", skillEntries); // Debug log
+
+      const skills = skillEntries
+        .map((entry, index) => {
+          const match = entry.match(/([^:]+):\s*([^\s]+)\s*(\d+)/);
+          console.log("Entry:", entry, "Match:", match); // Debug log
+
+          if (!match) return null;
+
+          const skillName = match[1].trim();
+          const emoji = match[2];
+          const value = parseInt(match[3], 10);
+          const displayValue = value * 10;
+
+          return (
+            <div key={index} className="mb-4">
+              <div className="flex justify-between mb-1">
+                <span className="font-semibold">{skillName}</span>
+                <span>
+                  {emoji} {value}/10
+                </span>
+              </div>
+              <progress
+                className={`progress ${getProgressColor(
+                  displayValue
+                )} w-full h-4`}
+                value={displayValue}
+                max="100"
+              ></progress>
+            </div>
+          );
+        })
+        .filter(Boolean); // Remove null entries
+
+      console.log("Rendered skills:", skills); // Debug log
+
+      if (skills.length === 0) {
+        return (
+          <div className="alert alert-warning">
+            <span>No valid skills found in the response</span>
+          </div>
+        );
+      }
+
+      return skills;
+    } catch (error) {
+      console.error("Error parsing skills:", error);
+      return (
+        <div className="alert alert-error">
+          <span>Error displaying skills metrics</span>
+        </div>
+      );
+    }
+  };
+
   return (
-    <div className="flex justify-center ">
+    <div className="flex justify-center">
       {!open ? (
         <button
           className="btn btn-primary flex items-center gap-2"
@@ -137,63 +172,20 @@ export default function ViewMetrics({ fileContent }) {
               <span className="loading loading-spinner loading-lg"></span>
               <p className="mt-4">Analyzing skills...</p>
             </div>
-          ) : metrics.length > 0 ? (
+          ) : error ? (
+            <div className="alert alert-error">
+              <span>{error}</span>
+            </div>
+          ) : view ? (
             <div className="space-y-5">
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="font-semibold">Social</span>
-                  <span>🤝 8/10</span>
+              {" "}
+              {view ? (
+                renderSkills()
+              ) : (
+                <div className="alert alert-warning">
+                  <span>No metrics data available</span>
                 </div>
-                <progress
-                  className={`progress ${getProgressColor(80)} w-full h-4`}
-                  value={80}
-                  max="100"
-                ></progress>
-              </div>
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="font-semibold">Physical</span>
-                  <span>💪 9/10</span>
-                </div>
-                <progress
-                  className={`progress ${getProgressColor(90)} w-full h-4`}
-                  value={90}
-                  max="100"
-                ></progress>
-              </div>
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="font-semibold">Communicative</span>
-                  <span>🗣️ 8/10</span>
-                </div>
-                <progress
-                  className={`progress ${getProgressColor(80)} w-full h-4`}
-                  value={80}
-                  max="100"
-                ></progress>
-              </div>
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="font-semibold">Technical</span>
-                  <span>💻 7/10</span>
-                </div>
-                <progress
-                  className={`progress ${getProgressColor(70)} w-full h-4`}
-                  value={70}
-                  max="100"
-                ></progress>
-              </div>
-              <div>
-                <div className="flex justify-between mb-1">
-                  <span className="font-semibold">Creative</span>
-                  <span>🎨 6/10</span>
-                </div>
-                <progress
-                  className={`progress ${getProgressColor(60)} w-full h-4`}
-                  value={60}
-                  max="100"
-                ></progress>
-              </div>
+              )}
             </div>
           ) : (
             <div className="alert alert-error">
