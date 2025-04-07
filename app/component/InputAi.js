@@ -6,6 +6,7 @@ import axios from "axios";
 export default function InputAi({ fileContent }) {
   const [response, setResponse] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [description, setDescription] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [metrics, setMetrics] = useState(null); // Store metrics as an object
 
@@ -18,7 +19,12 @@ export default function InputAi({ fileContent }) {
   }, []);
 
   const handleChange = (e) => {
-    setInputValue(e.target.value);
+    const { id, value } = e.target;
+    if (id === "1") {
+      setInputValue(value);
+    } else {
+      setDescription(value);
+    }
   };
 
   const handleSave = () => {
@@ -36,7 +42,7 @@ export default function InputAi({ fileContent }) {
       const { data } = await axios.post(
         "/api/GeminiAi",
         {
-          prompt: fileContent,
+          prompt: description,
           inputValue,
         },
         {
@@ -72,9 +78,22 @@ export default function InputAi({ fileContent }) {
           </h1>
 
           <textarea
+            id="1"
             value={inputValue}
             onChange={handleChange}
             placeholder="backend, remote, 3k salary..."
+            className="w-full p-4 border border-indigo-100 rounded-lg mb-4 min-h-[120px] focus:outline-none focus:ring-2 focus:ring-indigo-300 text-gray-700 placeholder-gray-400"
+            disabled={isLoading}
+          />
+          <h1 className="text-xl font-bold text-indigo-600 mb-6">
+            Description of the job
+          </h1>
+
+          <textarea
+            id="2"
+            value={description}
+            onChange={handleChange}
+            placeholder="add description of the job"
             className="w-full p-4 border border-indigo-100 rounded-lg mb-4 min-h-[120px] focus:outline-none focus:ring-2 focus:ring-indigo-300 text-gray-700 placeholder-gray-400"
             disabled={isLoading}
           />
