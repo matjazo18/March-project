@@ -18,7 +18,7 @@ export default function Home() {
       <div className=" flex-col justify-center mx-auto space-y-8 pb-40">
         <div className=" flex justify-center">
           <FileDropArea setFileContent={setFileContent} />{" "}
-          <ViewMetrics fileContent={fileContent} />
+          {fileContent ? <ViewMetrics fileContent={fileContent} /> : <></>}
         </div>
         <InputAi fileContent={fileContent} />
       </div>

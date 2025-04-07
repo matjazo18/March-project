@@ -15,7 +15,7 @@ export default function ViewMetrics({ fileContent }) {
   };
 
   const inputValue =
-    "From the CV make a metric on scale from 1 to 10 how much is this person social, physical, communicative, technical and creative. Also add some emojis and only the metric and the score along with it. Write only metrics with no other text and separate them with ,. And don't give so much point the cv should have atleat 3 things to get to 7/10 and if they have only 1 experience with working physical that would be like  a 2/10";
+    "From the CV make a metric on scale from 1 to 10 how much is this person social, physical, communicative, technical and creative. Also add some emojis and only the metric and the score along with it. Write only metrics with no other text and separate them with ,. And don't give so much point the cv should have atleat 3 things to get to 7/10 and if they have only 1 experience with working physical that would be like  2/10";
 
   const handleGenerate = async () => {
     setLoading(true);
@@ -157,14 +157,6 @@ export default function ViewMetrics({ fileContent }) {
         </button>
       ) : (
         <div className="relative bg-base-100 p-6 rounded-box shadow-lg w-80">
-          <button
-            onClick={setclose}
-            className="btn btn-circle btn-sm absolute -right-3 -top-3"
-            aria-label="Close"
-          >
-            ✕
-          </button>
-
           <h3 className="text-xl font-bold mb-4">Skills Assessment</h3>
 
           {loading ? (
