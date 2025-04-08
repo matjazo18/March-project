@@ -77,14 +77,18 @@ export default function InputAi({ fileContent }) {
           {fileContent ? (
             <>
               <h1 className="text-2xl font-bold text-indigo-600 mb-6">
-                Find your perfect job
+                Personal letter to the company
               </h1>
+              <hr></hr>
+              <h2 className="text-xl font-bold text-indigo-600 mb-6">
+                some custom desription?
+              </h2>
 
               <textarea
                 id="1"
                 value={inputValue}
                 onChange={handleChange}
-                placeholder="backend, remote, 3k salary..."
+                placeholder="100 word long, personal, write it like a student..."
                 className="w-full p-4 border border-indigo-100 rounded-lg mb-4 min-h-[120px] focus:outline-none focus:ring-2 focus:ring-indigo-300 text-gray-700 placeholder-gray-400"
                 disabled={isLoading}
               />
@@ -97,7 +101,7 @@ export default function InputAi({ fileContent }) {
                 id="2"
                 value={description}
                 onChange={handleChange}
-                placeholder="backend, remote, 3k salary..."
+                placeholder="Anything about the company you want to applay for "
                 className="w-full p-4 border border-indigo-100 rounded-lg mb-4 min-h-[120px] focus:outline-none focus:ring-2 focus:ring-indigo-300 text-gray-700 placeholder-gray-400"
                 disabled={isLoading}
               />
@@ -138,7 +142,7 @@ export default function InputAi({ fileContent }) {
               </div>
             </>
           ) : (
-            <h1 className=" font-extrabold text-2xl text-center">
+            <h1 className=" font-semibold text-xl text-center">
               To continue please Provide your CV
             </h1>
           )}
