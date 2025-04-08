@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request) {
   try {
-    const { prompt, inputValue } = await request.json();
+    const { prompt, inputValue, fileContent } = await request.json();
 
     if (!prompt) {
       return NextResponse.json(
@@ -13,7 +13,9 @@ export async function POST(request) {
       );
     }
 
-    const fullPrompt = `${prompt || ""}\n\n${inputValue || ""}`.trim();
+    const fullPrompt = `${inputValue || ""}\n\n with my CV file ${
+      fileContent || ""
+    } with description of this company${prompt || ""}`.trim();
 
     const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
