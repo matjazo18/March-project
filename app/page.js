@@ -7,6 +7,7 @@ import ViewMetrics from "./component/ViewMetrics";
 import { useState } from "react"; 
 import FileDropArea from "./component/FileDropArea";
 import RecommendJob from "./component/RecommendJob";
+import InterviewQuestions from "./component/InterviewQuestions";
 
 export default function Home() {
   const [fileContent, setFileContent] = useState("");
@@ -24,6 +25,7 @@ export default function Home() {
         </div>
         <InputAi fileContent={fileContent} />
         <RecommendJob />
+        <InterviewQuestions filterElements={fileContent} />
       </div>
     </div>
   );
