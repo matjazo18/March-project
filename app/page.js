@@ -13,7 +13,7 @@ export default function Home() {
       <h1 className="text-6xl text-center font-extrabold py-10 tracking-tight leading-tight">
         From <span className="text-blue-500">CV</span> to{" "}
         <span className="text-green-500">Career</span>:
-        <br /> AI-Powered Job Discoveryy
+        <br /> AI-Powered Job Discoveryy hello
       </h1>
       <div className=" flex-col justify-center mx-auto space-y-8 pb-40">
         <div className=" flex justify-center">
