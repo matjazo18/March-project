@@ -1,10 +1,12 @@
 "use client";
 import Image from "next/image";
-import FileDropArea from "./component/FileDropArea";
+
 import { GoogleGenAI } from "@google/genai";
 import InputAi from "./component/InputAi";
 import ViewMetrics from "./component/ViewMetrics";
-import { useState } from "react";
+import { useState } from "react"; 
+import FileDropArea from "./component/FileDropArea";
+import RecommendJob from "./component/RecommendJob";
 
 export default function Home() {
   const [fileContent, setFileContent] = useState("");
@@ -21,6 +23,7 @@ export default function Home() {
           {fileContent ? <ViewMetrics fileContent={fileContent} /> : <></>}
         </div>
         <InputAi fileContent={fileContent} />
+        <RecommendJob />
       </div>
     </div>
   );
