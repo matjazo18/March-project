@@ -136,7 +136,11 @@ export default function InputAi({ fileContent }) {
                       Generating...
                     </>
                   ) : (
+<<<<<<< HEAD
                     "Find Job"
+=======
+                    "Create a request to the company"
+>>>>>>> 9af52ea (commiting from other computer)
                   )}
                 </button>
               </div>
