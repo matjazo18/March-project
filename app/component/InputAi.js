@@ -69,7 +69,7 @@ export default function InputAi({ fileContent }) {
       setIsLoading(false);
     }
   };
-
+  //ssss
   return (
     <div className="bg-gradient-to-br from-blue-50 to-indigo-50  font-sans p-4">
       <div className="mt-8 max-w-2xl mx-auto">
@@ -136,9 +136,7 @@ export default function InputAi({ fileContent }) {
                       Generating...
                     </>
                   ) : (
-
                     "Create a request to the company"
-
                   )}
                 </button>
               </div>
