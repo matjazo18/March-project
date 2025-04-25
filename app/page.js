@@ -10,6 +10,9 @@ import RecommendJob from "./component/RecommendJob";
 import InterviewQuestions from "./component/InterviewQuestions";
 import Animation from "./component/Animation";
 
+
+// MAIN Page
+//TODO EXPLORE MORE ANIMATIONS and find better ai 
 export default function Home() {
   const [fileContent, setFileContent] = useState("");
   return (
