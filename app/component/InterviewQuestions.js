@@ -183,7 +183,7 @@ export default function InterviewQuestions({ filterElements }) {
                     />
                   </svg>
                 </span>{" "}
-                Personal google sheet
+                Better overview on your finances
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-green-400 text-lg">
